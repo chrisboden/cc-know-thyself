@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Interactive mode
 
 > Complete reference for keyboard shortcuts, input modes, and interactive features in Claude Code sessions.
@@ -93,7 +97,7 @@ To create your own commands you can invoke with `/`, see [skills](/en/skills).
 | `/mcp`                    | Manage MCP server connections and OAuth authentication                                                                      |
 | `/memory`                 | Edit `CLAUDE.md` memory files                                                                                               |
 | `/model`                  | Select or change the AI model                                                                                               |
-| `/permissions`            | View or update [permissions](/en/iam#configuring-permissions)                                                               |
+| `/permissions`            | View or update [permissions](/en/permissions#manage-permissions)                                                            |
 | `/plan`                   | Enter plan mode directly from the prompt                                                                                    |
 | `/rename <name>`          | Rename the current session for easier identification                                                                        |
 | `/resume [session]`       | Resume a conversation by ID or name, or open the session picker                                                             |
@@ -101,6 +105,7 @@ To create your own commands you can invoke with `/`, see [skills](/en/skills).
 | `/stats`                  | Visualize daily usage, session history, streaks, and model preferences                                                      |
 | `/status`                 | Open the Settings interface (Status tab) showing version, model, account, and connectivity                                  |
 | `/statusline`             | Set up Claude Code's status line UI                                                                                         |
+| `/copy`                   | Copy the last assistant response to clipboard                                                                               |
 | `/tasks`                  | List and manage background tasks                                                                                            |
 | `/teleport`               | Resume a remote session from claude.ai (subscribers only)                                                                   |
 | `/theme`                  | Change the color theme                                                                                                      |
@@ -146,6 +151,8 @@ Enable vim-style editing with `/vim` command or configure permanently via `/conf
 | `T{char}`       | Jump to just after previous occurrence of character |
 | `;`             | Repeat last f/F/t/T motion                          |
 | `,`             | Repeat last f/F/t/T motion in reverse               |
+
+> **Note:** In vim normal mode, if the cursor is at the beginning or end of input and cannot move further, the arrow keys navigate command history instead.
 
 ### Editing (NORMAL mode)
 
@@ -255,6 +262,25 @@ Bash mode:
 
 This is useful for quick shell operations while maintaining conversation context.
 
+## Prompt suggestions
+
+When you first open a session, a grayed-out example command appears in the prompt input to help you get started. Claude Code picks this from your project's git history, so it reflects files you've been working on recently.
+
+After Claude responds, suggestions continue to appear based on your conversation history, such as a follow-up step from a multi-part request or a natural continuation of your workflow.
+
+* Press **Tab** to accept the suggestion, or press **Enter** to accept and submit
+* Start typing to dismiss it
+
+The suggestion runs as a background request that reuses the parent conversation's prompt cache, so the additional cost is minimal. Claude Code skips suggestion generation when the cache is cold to avoid unnecessary cost.
+
+Suggestions are automatically skipped after the first turn of a conversation, in non-interactive mode, and in plan mode.
+
+To disable prompt suggestions entirely, set the environment variable or toggle the setting in `/config`:
+
+```bash  theme={null}
+export CLAUDE_CODE_ENABLE_PROMPT_SUGGESTION=false
+```
+
 ## Task list
 
 When working on complex, multi-step work, Claude creates a task list to track progress. Tasks appear in the status area of your terminal with indicators showing what's pending, in progress, or complete.
@@ -263,6 +289,21 @@ When working on complex, multi-step work, Claude creates a task list to track pr
 * To see all tasks or clear them, ask Claude directly: "show me all tasks" or "clear all tasks"
 * Tasks persist across context compactions, helping Claude stay organized on larger projects
 * To share a task list across sessions, set `CLAUDE_CODE_TASK_LIST_ID` to use a named directory in `~/.claude/tasks/`: `CLAUDE_CODE_TASK_LIST_ID=my-project claude`
+* To revert to the previous TODO list, set `CLAUDE_CODE_ENABLE_TASKS=false`.
+
+## PR review status
+
+When working on a branch with an open pull request, Claude Code displays a clickable PR link in the footer (for example, "PR #446"). The link has a colored underline indicating the review state:
+
+* Green: approved
+* Yellow: pending review
+* Red: changes requested
+* Gray: draft
+* Purple: merged
+
+`Cmd+click` (Mac) or `Ctrl+click` (Windows/Linux) the link to open the pull request in your browser. The status updates automatically every 60 seconds.
+
+> **Note:** PR status requires the `gh` CLI to be installed and authenticated (`gh auth login`).
 
 ## See also
 
@@ -271,8 +312,3 @@ When working on complex, multi-step work, Claude creates a task list to track pr
 * [CLI reference](/en/cli-reference) - Command-line flags and options
 * [Settings](/en/settings) - Configuration options
 * [Memory management](/en/memory) - Managing CLAUDE.md files
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt

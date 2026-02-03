@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Best Practices for Claude Code
 
 > Tips and patterns for getting the most out of Claude Code, from configuring your environment to scaling across parallel sessions.
@@ -48,42 +52,39 @@ Letting Claude jump straight to coding can produce code that solves the wrong pr
 
 The recommended workflow has four phases:
 
-<Steps>
-  <Step title="Explore">
-    Enter Plan Mode. Claude reads files and answers questions without making changes.
+1. **Explore**
+   Enter Plan Mode. Claude reads files and answers questions without making changes.
+   
+       ```txt claude (Plan Mode) theme={null}
+       read /src/auth and understand how we handle sessions and login.
+       also look at how we manage environment variables for secrets.
+       ```
 
-    ```txt claude (Plan Mode) theme={null}
-    read /src/auth and understand how we handle sessions and login.
-    also look at how we manage environment variables for secrets.
-    ```
-  </Step>
+2. **Plan**
+   Ask Claude to create a detailed implementation plan.
+   
+       ```txt claude (Plan Mode) theme={null}
+       I want to add Google OAuth. What files need to change?
+       What's the session flow? Create a plan.
+       ```
+   
+       Press `Ctrl+G` to open the plan in your text editor for direct editing before Claude proceeds.
 
-  <Step title="Plan">
-    Ask Claude to create a detailed implementation plan.
+3. **Implement**
+   Switch back to Normal Mode and let Claude code, verifying against its plan.
+   
+       ```txt claude (Normal Mode) theme={null}
+       implement the OAuth flow from your plan. write tests for the
+       callback handler, run the test suite and fix any failures.
+       ```
 
-    ```txt claude (Plan Mode) theme={null}
-    I want to add Google OAuth. What files need to change?
-    What's the session flow? Create a plan.
-    ```
-  </Step>
+4. **Commit**
+   Ask Claude to commit with a descriptive message and create a PR.
+   
+       ```txt claude (Normal Mode) theme={null}
+       commit with a descriptive message and open a PR
+       ```
 
-  <Step title="Implement">
-    Switch back to Normal Mode and let Claude code, verifying against its plan.
-
-    ```txt claude (Normal Mode) theme={null}
-    implement the OAuth flow from your plan. write tests for the
-    callback handler, run the test suite and fix any failures.
-    ```
-  </Step>
-
-  <Step title="Commit">
-    Ask Claude to commit with a descriptive message and create a PR.
-
-    ```txt claude (Normal Mode) theme={null}
-    commit with a descriptive message and open a PR
-    ```
-  </Step>
-</Steps>
 
 <Callout>
   Plan Mode is useful, but also adds overhead.
@@ -290,7 +291,7 @@ Tell Claude to use subagents explicitly: *"Use a subagent to review this code fo
 
 > **Tip:** Run `/plugin` to browse the marketplace. Plugins add skills, tools, and integrations without configuration.
 
-[Plugins](/en/plugins) bundle skills, hooks, subagents, and MCP servers into a single installable unit from the community and Anthropic.
+[Plugins](/en/plugins) bundle skills, hooks, subagents, and MCP servers into a single installable unit from the community and Anthropic. If you work with a typed language, install a [code intelligence plugin](/en/discover-plugins#code-intelligence) to give Claude precise symbol navigation and automatic error detection after edits.
 
 For guidance on choosing between skills, subagents, hooks, and MCP, see [Extend Claude Code](/en/features-overview#match-features-to-your-goal).
 
@@ -456,24 +457,20 @@ You can do something similar with tests: have one Claude write tests, then anoth
 
 For large migrations or analyses, you can distribute work across many parallel Claude invocations:
 
-<Steps>
-  <Step title="Generate a task list">
-    Have Claude list all files that need migrating (e.g., `list all 2,000 Python files that need migrating`)
-  </Step>
+1. **Generate a task list**
+   Have Claude list all files that need migrating (e.g., `list all 2,000 Python files that need migrating`)
 
-  <Step title="Write a script to loop through the list">
-    ```bash  theme={null}
-    for file in $(cat files.txt); do
-      claude -p "Migrate $file from React to Vue. Return OK or FAIL." \
-        --allowedTools "Edit,Bash(git commit:*)"
-    done
-    ```
-  </Step>
+2. **Write a script to loop through the list**
+   ```bash  theme={null}
+       for file in $(cat files.txt); do
+         claude -p "Migrate $file from React to Vue. Return OK or FAIL." \
+           --allowedTools "Edit,Bash(git commit *)"
+       done
+       ```
 
-  <Step title="Test on a few files, then run at scale">
-    Refine your prompt based on what goes wrong with the first 2-3 files, then run on the full set. The `--allowedTools` flag restricts what Claude can do, which matters when you're running unattended.
-  </Step>
-</Steps>
+3. **Test on a few files, then run at scale**
+   Refine your prompt based on what goes wrong with the first 2-3 files, then run on the full set. The `--allowedTools` flag restricts what Claude can do, which matters when you're running unattended.
+
 
 You can also integrate Claude into existing data/processing pipelines:
 
@@ -539,8 +536,3 @@ Over time, you'll develop intuition that no guide can capture. You'll know when 
     Store project conventions and persistent context
   </Card>
 </CardGroup>
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt

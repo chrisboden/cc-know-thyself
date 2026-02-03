@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Common workflows
 
 > Step-by-step guides for exploring codebases, fixing bugs, refactoring, testing, and other everyday tasks with Claude Code.
@@ -10,39 +14,34 @@ This page covers practical workflows for everyday development: exploring unfamil
 
 Suppose you've just joined a new project and need to understand its structure quickly.
 
-<Steps>
-  <Step title="Navigate to the project root directory">
-    ```bash  theme={null}
-    cd /path/to/project 
-    ```
-  </Step>
+1. **Navigate to the project root directory**
+   ```bash  theme={null}
+       cd /path/to/project 
+       ```
 
-  <Step title="Start Claude Code">
-    ```bash  theme={null}
-    claude 
-    ```
-  </Step>
+2. **Start Claude Code**
+   ```bash  theme={null}
+       claude 
+       ```
 
-  <Step title="Ask for a high-level overview">
-    ```
-    > give me an overview of this codebase 
-    ```
-  </Step>
+3. **Ask for a high-level overview**
+   ```
+       > give me an overview of this codebase 
+       ```
 
-  <Step title="Dive deeper into specific components">
-    ```
-    > explain the main architecture patterns used here 
-    ```
+4. **Dive deeper into specific components**
+   ```
+       > explain the main architecture patterns used here 
+       ```
+   
+       ```
+       > what are the key data models?
+       ```
+   
+       ```
+       > how is authentication handled?
+       ```
 
-    ```
-    > what are the key data models?
-    ```
-
-    ```
-    > how is authentication handled?
-    ```
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -54,30 +53,27 @@ Suppose you've just joined a new project and need to understand its structure qu
 
 Suppose you need to locate code related to a specific feature or functionality.
 
-<Steps>
-  <Step title="Ask Claude to find relevant files">
-    ```
-    > find the files that handle user authentication 
-    ```
-  </Step>
+1. **Ask Claude to find relevant files**
+   ```
+       > find the files that handle user authentication 
+       ```
 
-  <Step title="Get context on how components interact">
-    ```
-    > how do these authentication files work together? 
-    ```
-  </Step>
+2. **Get context on how components interact**
+   ```
+       > how do these authentication files work together? 
+       ```
 
-  <Step title="Understand the execution flow">
-    ```
-    > trace the login process from front-end to database 
-    ```
-  </Step>
-</Steps>
+3. **Understand the execution flow**
+   ```
+       > trace the login process from front-end to database 
+       ```
+
 
 > **Tip:** Tips:
 
   * Be specific about what you're looking for
   * Use domain language from the project
+  * Install a [code intelligence plugin](/en/discover-plugins#code-intelligence) for your language to give Claude precise "go to definition" and "find references" navigation
 
 ***
 
@@ -85,25 +81,21 @@ Suppose you need to locate code related to a specific feature or functionality.
 
 Suppose you've encountered an error message and need to find and fix its source.
 
-<Steps>
-  <Step title="Share the error with Claude">
-    ```
-    > I'm seeing an error when I run npm test 
-    ```
-  </Step>
+1. **Share the error with Claude**
+   ```
+       > I'm seeing an error when I run npm test 
+       ```
 
-  <Step title="Ask for fix recommendations">
-    ```
-    > suggest a few ways to fix the @ts-ignore in user.ts 
-    ```
-  </Step>
+2. **Ask for fix recommendations**
+   ```
+       > suggest a few ways to fix the @ts-ignore in user.ts 
+       ```
 
-  <Step title="Apply the fix">
-    ```
-    > update user.ts to add the null check you suggested 
-    ```
-  </Step>
-</Steps>
+3. **Apply the fix**
+   ```
+       > update user.ts to add the null check you suggested 
+       ```
+
 
 > **Tip:** Tips:
 
@@ -117,31 +109,26 @@ Suppose you've encountered an error message and need to find and fix its source.
 
 Suppose you need to update old code to use modern patterns and practices.
 
-<Steps>
-  <Step title="Identify legacy code for refactoring">
-    ```
-    > find deprecated API usage in our codebase 
-    ```
-  </Step>
+1. **Identify legacy code for refactoring**
+   ```
+       > find deprecated API usage in our codebase 
+       ```
 
-  <Step title="Get refactoring recommendations">
-    ```
-    > suggest how to refactor utils.js to use modern JavaScript features 
-    ```
-  </Step>
+2. **Get refactoring recommendations**
+   ```
+       > suggest how to refactor utils.js to use modern JavaScript features 
+       ```
 
-  <Step title="Apply the changes safely">
-    ```
-    > refactor utils.js to use ES2024 features while maintaining the same behavior 
-    ```
-  </Step>
+3. **Apply the changes safely**
+   ```
+       > refactor utils.js to use ES2024 features while maintaining the same behavior 
+       ```
 
-  <Step title="Verify the refactoring">
-    ```
-    > run tests for the refactored code 
-    ```
-  </Step>
-</Steps>
+4. **Verify the refactoring**
+   ```
+       > run tests for the refactored code 
+       ```
+
 
 > **Tip:** Tips:
 
@@ -155,50 +142,45 @@ Suppose you need to update old code to use modern patterns and practices.
 
 Suppose you want to use specialized AI subagents to handle specific tasks more effectively.
 
-<Steps>
-  <Step title="View available subagents">
-    ```
-    > /agents
-    ```
+1. **View available subagents**
+   ```
+       > /agents
+       ```
+   
+       This shows all available subagents and lets you create new ones.
 
-    This shows all available subagents and lets you create new ones.
-  </Step>
+2. **Use subagents automatically**
+   Claude Code automatically delegates appropriate tasks to specialized subagents:
+   
+       ```
+       > review my recent code changes for security issues
+       ```
+   
+       ```
+       > run all tests and fix any failures
+       ```
 
-  <Step title="Use subagents automatically">
-    Claude Code automatically delegates appropriate tasks to specialized subagents:
+3. **Explicitly request specific subagents**
+   ```
+       > use the code-reviewer subagent to check the auth module
+       ```
+   
+       ```
+       > have the debugger subagent investigate why users can't log in
+       ```
 
-    ```
-    > review my recent code changes for security issues
-    ```
+4. **Create custom subagents for your workflow**
+   ```
+       > /agents
+       ```
+   
+       Then select "Create New subagent" and follow the prompts to define:
+   
+       * A unique identifier that describes the subagent's purpose (for example, `code-reviewer`, `api-designer`).
+       * When Claude should use this agent
+       * Which tools it can access
+       * A system prompt describing the agent's role and behavior
 
-    ```
-    > run all tests and fix any failures
-    ```
-  </Step>
-
-  <Step title="Explicitly request specific subagents">
-    ```
-    > use the code-reviewer subagent to check the auth module
-    ```
-
-    ```
-    > have the debugger subagent investigate why users can't log in
-    ```
-  </Step>
-
-  <Step title="Create custom subagents for your workflow">
-    ```
-    > /agents
-    ```
-
-    Then select "Create New subagent" and follow the prompts to define:
-
-    * A unique identifier that describes the subagent's purpose (for example, `code-reviewer`, `api-designer`).
-    * When Claude should use this agent
-    * Which tools it can access
-    * A system prompt describing the agent's role and behavior
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -260,6 +242,8 @@ Claude analyzes the current implementation and create a comprehensive plan. Refi
 > How should we handle database migration?
 ```
 
+> **Tip:** Press `Ctrl+G` to open the plan in your default text editor, where you can edit it directly before Claude proceeds.
+
 ### Configure Plan Mode as default
 
 ```json  theme={null}
@@ -279,31 +263,26 @@ See [settings documentation](/en/settings#available-settings) for more configura
 
 Suppose you need to add tests for uncovered code.
 
-<Steps>
-  <Step title="Identify untested code">
-    ```
-    > find functions in NotificationsService.swift that are not covered by tests 
-    ```
-  </Step>
+1. **Identify untested code**
+   ```
+       > find functions in NotificationsService.swift that are not covered by tests 
+       ```
 
-  <Step title="Generate test scaffolding">
-    ```
-    > add tests for the notification service 
-    ```
-  </Step>
+2. **Generate test scaffolding**
+   ```
+       > add tests for the notification service 
+       ```
 
-  <Step title="Add meaningful test cases">
-    ```
-    > add test cases for edge conditions in the notification service 
-    ```
-  </Step>
+3. **Add meaningful test cases**
+   ```
+       > add test cases for edge conditions in the notification service 
+       ```
 
-  <Step title="Run and verify tests">
-    ```
-    > run the new tests and fix any failures 
-    ```
-  </Step>
-</Steps>
+4. **Run and verify tests**
+   ```
+       > run the new tests and fix any failures 
+       ```
+
 
 Claude can generate tests that follow your project's existing patterns and conventions. When asking for tests, be specific about what behavior you want to verify. Claude examines your existing test files to match the style, frameworks, and assertion patterns already in use.
 
@@ -313,69 +292,60 @@ For comprehensive coverage, ask Claude to identify edge cases you might have mis
 
 ## Create pull requests
 
-Suppose you need to create a well-documented pull request for your changes.
+You can create pull requests by asking Claude directly ("create a pr for my changes") or by using the `/commit-push-pr` skill, which commits, pushes, and opens a PR in one step.
 
-<Steps>
-  <Step title="Summarize your changes">
-    ```
-    > summarize the changes I've made to the authentication module 
-    ```
-  </Step>
+```
+> /commit-push-pr
+```
 
-  <Step title="Generate a pull request with Claude">
-    ```
-    > create a pr 
-    ```
-  </Step>
+If you have a Slack MCP server configured and specify channels in your CLAUDE.md (for example, "post PR URLs to #team-prs"), the skill automatically posts the PR URL to those channels.
 
-  <Step title="Review and refine">
-    ```
-    > enhance the PR description with more context about the security improvements 
-    ```
-  </Step>
+For more control over the process, guide Claude through it step-by-step or [create your own skill](/en/skills):
 
-  <Step title="Add testing details">
-    ```
-    > add information about how these changes were tested 
-    ```
-  </Step>
-</Steps>
+1. **Summarize your changes**
+   ```
+       > summarize the changes I've made to the authentication module
+       ```
 
-> **Tip:** Tips:
+2. **Generate a pull request**
+   ```
+       > create a pr
+       ```
 
-  * Ask Claude directly to make a PR for you
-  * Review Claude's generated PR before submitting
-  * Ask Claude to highlight potential risks or considerations
+3. **Review and refine**
+   ```
+       > enhance the PR description with more context about the security improvements
+       ```
+
+
+When you create a PR using `gh pr create`, the session is automatically linked to that PR. You can resume it later with `claude --from-pr <number>`.
+
+> **Tip:** Review Claude's generated PR before submitting and ask Claude to highlight potential risks or considerations.
 
 ## Handle documentation
 
 Suppose you need to add or update documentation for your code.
 
-<Steps>
-  <Step title="Identify undocumented code">
-    ```
-    > find functions without proper JSDoc comments in the auth module 
-    ```
-  </Step>
+1. **Identify undocumented code**
+   ```
+       > find functions without proper JSDoc comments in the auth module 
+       ```
 
-  <Step title="Generate documentation">
-    ```
-    > add JSDoc comments to the undocumented functions in auth.js 
-    ```
-  </Step>
+2. **Generate documentation**
+   ```
+       > add JSDoc comments to the undocumented functions in auth.js 
+       ```
 
-  <Step title="Review and enhance">
-    ```
-    > improve the generated documentation with more context and examples 
-    ```
-  </Step>
+3. **Review and enhance**
+   ```
+       > improve the generated documentation with more context and examples 
+       ```
 
-  <Step title="Verify documentation">
-    ```
-    > check if the documentation follows our project standards 
-    ```
-  </Step>
-</Steps>
+4. **Verify documentation**
+   ```
+       > check if the documentation follows our project standards 
+       ```
+
 
 > **Tip:** Tips:
 
@@ -389,49 +359,44 @@ Suppose you need to add or update documentation for your code.
 
 Suppose you need to work with images in your codebase, and you want Claude's help analyzing image content.
 
-<Steps>
-  <Step title="Add an image to the conversation">
-    You can use any of these methods:
+1. **Add an image to the conversation**
+   You can use any of these methods:
+   
+       1. Drag and drop an image into the Claude Code window
+       2. Copy an image and paste it into the CLI with ctrl+v (Do not use cmd+v)
+       3. Provide an image path to Claude. E.g., "Analyze this image: /path/to/your/image.png"
 
-    1. Drag and drop an image into the Claude Code window
-    2. Copy an image and paste it into the CLI with ctrl+v (Do not use cmd+v)
-    3. Provide an image path to Claude. E.g., "Analyze this image: /path/to/your/image.png"
-  </Step>
+2. **Ask Claude to analyze the image**
+   ```
+       > What does this image show?
+       ```
+   
+       ```
+       > Describe the UI elements in this screenshot
+       ```
+   
+       ```
+       > Are there any problematic elements in this diagram?
+       ```
 
-  <Step title="Ask Claude to analyze the image">
-    ```
-    > What does this image show?
-    ```
+3. **Use images for context**
+   ```
+       > Here's a screenshot of the error. What's causing it?
+       ```
+   
+       ```
+       > This is our current database schema. How should we modify it for the new feature?
+       ```
 
-    ```
-    > Describe the UI elements in this screenshot
-    ```
+4. **Get code suggestions from visual content**
+   ```
+       > Generate CSS to match this design mockup
+       ```
+   
+       ```
+       > What HTML structure would recreate this component?
+       ```
 
-    ```
-    > Are there any problematic elements in this diagram?
-    ```
-  </Step>
-
-  <Step title="Use images for context">
-    ```
-    > Here's a screenshot of the error. What's causing it?
-    ```
-
-    ```
-    > This is our current database schema. How should we modify it for the new feature?
-    ```
-  </Step>
-
-  <Step title="Get code suggestions from visual content">
-    ```
-    > Generate CSS to match this design mockup
-    ```
-
-    ```
-    > What HTML structure would recreate this component?
-    ```
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -447,31 +412,27 @@ Suppose you need to work with images in your codebase, and you want Claude's hel
 
 Use @ to quickly include files or directories without waiting for Claude to read them.
 
-<Steps>
-  <Step title="Reference a single file">
-    ```
-    > Explain the logic in @src/utils/auth.js
-    ```
+1. **Reference a single file**
+   ```
+       > Explain the logic in @src/utils/auth.js
+       ```
+   
+       This includes the full content of the file in the conversation.
 
-    This includes the full content of the file in the conversation.
-  </Step>
+2. **Reference a directory**
+   ```
+       > What's the structure of @src/components?
+       ```
+   
+       This provides a directory listing with file information.
 
-  <Step title="Reference a directory">
-    ```
-    > What's the structure of @src/components?
-    ```
+3. **Reference MCP resources**
+   ```
+       > Show me the data from @github:repos/owner/repo/issues
+       ```
+   
+       This fetches data from connected MCP servers using the format @server:resource. See [MCP resources](/en/mcp#use-mcp-resources) for details.
 
-    This provides a directory listing with file information.
-  </Step>
-
-  <Step title="Reference MCP resources">
-    ```
-    > Show me the data from @github:repos/owner/repo/issues
-    ```
-
-    This fetches data from connected MCP servers using the format @server:resource. See [MCP resources](/en/mcp#use-mcp-resources) for details.
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -533,6 +494,7 @@ When starting Claude Code, you can resume a previous session:
 
 * `claude --continue` continues the most recent conversation in the current directory
 * `claude --resume` opens a conversation picker or resumes by name
+* `claude --from-pr 123` resumes sessions linked to a specific pull request
 
 From inside an active session, use `/resume` to switch to a different conversation.
 
@@ -542,31 +504,28 @@ Sessions are stored per project directory. The `/resume` picker shows sessions f
 
 Give sessions descriptive names to find them later. This is a best practice when working on multiple tasks or features.
 
-<Steps>
-  <Step title="Name the current session">
-    Use `/rename` during a session to give it a memorable name:
+1. **Name the current session**
+   Use `/rename` during a session to give it a memorable name:
+   
+       ```
+       > /rename auth-refactor
+       ```
+   
+       You can also rename any session from the picker: run `/resume`, navigate to a session, and press `R`.
 
-    ```
-    > /rename auth-refactor
-    ```
+2. **Resume by name later**
+   From the command line:
+   
+       ```bash  theme={null}
+       claude --resume auth-refactor
+       ```
+   
+       Or from inside an active session:
+   
+       ```
+       > /resume auth-refactor
+       ```
 
-    You can also rename any session from the picker: run `/resume`, navigate to a session, and press `R`.
-  </Step>
-
-  <Step title="Resume by name later">
-    From the command line:
-
-    ```bash  theme={null}
-    claude --resume auth-refactor
-    ```
-
-    Or from inside an active session:
-
-    ```
-    > /resume auth-refactor
-    ```
-  </Step>
-</Steps>
 
 ### Use the session picker
 
@@ -620,54 +579,48 @@ Forked sessions (created with `/rewind` or `--fork-session`) are grouped togethe
 
 Suppose you need to work on multiple tasks simultaneously with complete code isolation between Claude Code instances.
 
-<Steps>
-  <Step title="Understand Git worktrees">
-    Git worktrees allow you to check out multiple branches from the same
-    repository into separate directories. Each worktree has its own working
-    directory with isolated files, while sharing the same Git history. Learn
-    more in the [official Git worktree
-    documentation](https://git-scm.com/docs/git-worktree).
-  </Step>
+1. **Understand Git worktrees**
+   Git worktrees allow you to check out multiple branches from the same
+       repository into separate directories. Each worktree has its own working
+       directory with isolated files, while sharing the same Git history. Learn
+       more in the [official Git worktree
+       documentation](https://git-scm.com/docs/git-worktree).
 
-  <Step title="Create a new worktree">
-    ```bash  theme={null}
-    # Create a new worktree with a new branch 
-    git worktree add ../project-feature-a -b feature-a
+2. **Create a new worktree**
+   ```bash  theme={null}
+       # Create a new worktree with a new branch 
+       git worktree add ../project-feature-a -b feature-a
+   
+       # Or create a worktree with an existing branch
+       git worktree add ../project-bugfix bugfix-123
+       ```
+   
+       This creates a new directory with a separate working copy of your repository.
 
-    # Or create a worktree with an existing branch
-    git worktree add ../project-bugfix bugfix-123
-    ```
+3. **Run Claude Code in each worktree**
+   ```bash  theme={null}
+       # Navigate to your worktree 
+       cd ../project-feature-a
+   
+       # Run Claude Code in this isolated environment
+       claude
+       ```
 
-    This creates a new directory with a separate working copy of your repository.
-  </Step>
+4. **Run Claude in another worktree**
+   ```bash  theme={null}
+       cd ../project-bugfix
+       claude
+       ```
 
-  <Step title="Run Claude Code in each worktree">
-    ```bash  theme={null}
-    # Navigate to your worktree 
-    cd ../project-feature-a
+5. **Manage your worktrees**
+   ```bash  theme={null}
+       # List all worktrees
+       git worktree list
+   
+       # Remove a worktree when done
+       git worktree remove ../project-feature-a
+       ```
 
-    # Run Claude Code in this isolated environment
-    claude
-    ```
-  </Step>
-
-  <Step title="Run Claude in another worktree">
-    ```bash  theme={null}
-    cd ../project-bugfix
-    claude
-    ```
-  </Step>
-
-  <Step title="Manage your worktrees">
-    ```bash  theme={null}
-    # List all worktrees
-    git worktree list
-
-    # Remove a worktree when done
-    git worktree remove ../project-feature-a
-    ```
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -728,31 +681,27 @@ cat build-error.txt | claude -p 'concisely explain the root cause of this build 
 
 Suppose you need Claude's output in a specific format, especially when integrating Claude Code into scripts or other tools.
 
-<Steps>
-  <Step title="Use text format (default)">
-    ```bash  theme={null}
-    cat data.txt | claude -p 'summarize this data' --output-format text > summary.txt
-    ```
+1. **Use text format (default)**
+   ```bash  theme={null}
+       cat data.txt | claude -p 'summarize this data' --output-format text > summary.txt
+       ```
+   
+       This outputs just Claude's plain text response (default behavior).
 
-    This outputs just Claude's plain text response (default behavior).
-  </Step>
+2. **Use JSON format**
+   ```bash  theme={null}
+       cat code.py | claude -p 'analyze this code for bugs' --output-format json > analysis.json
+       ```
+   
+       This outputs a JSON array of messages with metadata including cost and duration.
 
-  <Step title="Use JSON format">
-    ```bash  theme={null}
-    cat code.py | claude -p 'analyze this code for bugs' --output-format json > analysis.json
-    ```
+3. **Use streaming JSON format**
+   ```bash  theme={null}
+       cat log.txt | claude -p 'parse this log file for errors' --output-format stream-json
+       ```
+   
+       This outputs a series of JSON objects in real-time as Claude processes the request. Each message is a valid JSON object, but the entire output is not valid JSON if concatenated.
 
-    This outputs a JSON array of messages with metadata including cost and duration.
-  </Step>
-
-  <Step title="Use streaming JSON format">
-    ```bash  theme={null}
-    cat log.txt | claude -p 'parse this log file for errors' --output-format stream-json
-    ```
-
-    This outputs a series of JSON objects in real-time as Claude processes the request. Each message is a valid JSON object, but the entire output is not valid JSON if concatenated.
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -821,8 +770,3 @@ Claude has built-in access to its documentation and can answer questions about i
     Clone our development container reference implementation
   </Card>
 </CardGroup>
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt

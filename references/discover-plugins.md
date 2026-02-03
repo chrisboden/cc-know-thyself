@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Discover and install prebuilt plugins through marketplaces
 
 > Find and install plugins from marketplaces to extend Claude Code with new commands, agents, and capabilities.
@@ -10,15 +14,12 @@ Looking to create and distribute your own marketplace? See [Create and distribut
 
 A marketplace is a catalog of plugins that someone else has created and shared. Using a marketplace is a two-step process:
 
-<Steps>
-  <Step title="Add the marketplace">
-    This registers the catalog with Claude Code so you can browse what's available. No plugins are installed yet.
-  </Step>
+1. **Add the marketplace**
+   This registers the catalog with Claude Code so you can browse what's available. No plugins are installed yet.
 
-  <Step title="Install individual plugins">
-    Browse the catalog and install the plugins you want.
-  </Step>
-</Steps>
+2. **Install individual plugins**
+   Browse the catalog and install the plugins you want.
+
 
 Think of it like adding an app store: adding the store gives you access to browse its collection, but you still choose which apps to download individually.
 
@@ -38,7 +39,7 @@ The official marketplace includes several categories of plugins:
 
 ### Code intelligence
 
-Code intelligence plugins help Claude understand your codebase more deeply. With these plugins installed, Claude can jump to definitions, find references, and see type errors immediately after edits. These plugins use the [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) (LSP), the same technology that powers VS Code's code intelligence.
+Code intelligence plugins enable Claude Code's built-in LSP tool, giving Claude the ability to jump to definitions, find references, and see type errors immediately after edits. These plugins configure [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) connections, the same technology that powers VS Code's code intelligence.
 
 These plugins require the language server binary to be installed on your system. If you already have a language server installed, Claude may prompt you to install the corresponding plugin when you open a project.
 
@@ -48,6 +49,7 @@ These plugins require the language server binary to be installed on your system.
 | C#         | `csharp-lsp`        | `csharp-ls`                  |
 | Go         | `gopls-lsp`         | `gopls`                      |
 | Java       | `jdtls-lsp`         | `jdtls`                      |
+| Kotlin     | `kotlin-lsp`        | `kotlin-language-server`     |
 | Lua        | `lua-lsp`           | `lua-language-server`        |
 | PHP        | `php-lsp`           | `intelephense`               |
 | Python     | `pyright-lsp`       | `pyright-langserver`         |
@@ -58,6 +60,15 @@ These plugins require the language server binary to be installed on your system.
 You can also [create your own LSP plugin](/en/plugins-reference#lsp-servers) for other languages.
 
 > **Note:** If you see `Executable not found in $PATH` in the `/plugin` Errors tab after installing a plugin, install the required binary from the table above.
+
+#### What Claude gains from code intelligence plugins
+
+Once a code intelligence plugin is installed and its language server binary is available, Claude gains two capabilities:
+
+* **Automatic diagnostics**: after every file edit Claude makes, the language server analyzes the changes and reports errors and warnings back automatically. Claude sees type errors, missing imports, and syntax issues without needing to run a compiler or linter. If Claude introduces an error, it notices and fixes the issue in the same turn. This requires no configuration beyond installing the plugin. You can see diagnostics inline by pressing **Ctrl+O** when the "diagnostics found" indicator appears.
+* **Code navigation**: Claude can use the language server to jump to definitions, find references, get type info on hover, list symbols, find implementations, and trace call hierarchies. These operations give Claude more precise navigation than grep-based search, though availability may vary by language and environment.
+
+If you run into issues, see [Code intelligence troubleshooting](#code-intelligence-issues).
 
 ### External integrations
 
@@ -90,60 +101,55 @@ Customize how Claude responds:
 
 Anthropic also maintains a [demo plugins marketplace](https://github.com/anthropics/claude-code/tree/main/plugins) (`claude-code-plugins`) with example plugins that show what's possible with the plugin system. Unlike the official marketplace, you need to add this one manually.
 
-<Steps>
-  <Step title="Add the marketplace">
-    From within Claude Code, run the `plugin marketplace add` command for the `anthropics/claude-code` marketplace:
+1. **Add the marketplace**
+   From within Claude Code, run the `plugin marketplace add` command for the `anthropics/claude-code` marketplace:
+   
+       ```shell  theme={null}
+       /plugin marketplace add anthropics/claude-code
+       ```
+   
+       This downloads the marketplace catalog and makes its plugins available to you.
 
-    ```shell  theme={null}
-    /plugin marketplace add anthropics/claude-code
-    ```
+2. **Browse available plugins**
+   Run `/plugin` to open the plugin manager. This opens a tabbed interface with four tabs you can cycle through using **Tab** (or **Shift+Tab** to go backward):
+   
+       * **Discover**: browse available plugins from all your marketplaces
+       * **Installed**: view and manage your installed plugins
+       * **Marketplaces**: add, remove, or update your added marketplaces
+       * **Errors**: view any plugin loading errors
+   
+       Go to the **Discover** tab to see plugins from the marketplace you just added.
 
-    This downloads the marketplace catalog and makes its plugins available to you.
-  </Step>
+3. **Install a plugin**
+   Select a plugin to view its details, then choose an installation scope:
+   
+       * **User scope**: install for yourself across all projects
+       * **Project scope**: install for all collaborators on this repository
+       * **Local scope**: install for yourself in this repository only
+   
+       For example, select **commit-commands** (a plugin that adds git workflow commands) and install it to your user scope.
+   
+       You can also install directly from the command line:
+   
+       ```shell  theme={null}
+       /plugin install commit-commands@anthropics-claude-code
+       ```
+   
+       See [Configuration scopes](/en/settings#configuration-scopes) to learn more about scopes.
 
-  <Step title="Browse available plugins">
-    Run `/plugin` to open the plugin manager. This opens a tabbed interface with four tabs you can cycle through using **Tab** (or **Shift+Tab** to go backward):
+4. **Use your new plugin**
+   After installing, the plugin's commands are immediately available. Plugin commands are namespaced by the plugin name, so **commit-commands** provides commands like `/commit-commands:commit`.
+   
+       Try it out by making a change to a file and running:
+   
+       ```shell  theme={null}
+       /commit-commands:commit
+       ```
+   
+       This stages your changes, generates a commit message, and creates the commit.
+   
+       Each plugin works differently. Check the plugin's description in the **Discover** tab or its homepage to learn what commands and capabilities it provides.
 
-    * **Discover**: browse available plugins from all your marketplaces
-    * **Installed**: view and manage your installed plugins
-    * **Marketplaces**: add, remove, or update your added marketplaces
-    * **Errors**: view any plugin loading errors
-
-    Go to the **Discover** tab to see plugins from the marketplace you just added.
-  </Step>
-
-  <Step title="Install a plugin">
-    Select a plugin to view its details, then choose an installation scope:
-
-    * **User scope**: install for yourself across all projects
-    * **Project scope**: install for all collaborators on this repository
-    * **Local scope**: install for yourself in this repository only
-
-    For example, select **commit-commands** (a plugin that adds git workflow commands) and install it to your user scope.
-
-    You can also install directly from the command line:
-
-    ```shell  theme={null}
-    /plugin install commit-commands@anthropics-claude-code
-    ```
-
-    See [Configuration scopes](/en/settings#configuration-scopes) to learn more about scopes.
-  </Step>
-
-  <Step title="Use your new plugin">
-    After installing, the plugin's commands are immediately available. Plugin commands are namespaced by the plugin name, so **commit-commands** provides commands like `/commit-commands:commit`.
-
-    Try it out by making a change to a file and running:
-
-    ```shell  theme={null}
-    /commit-commands:commit
-    ```
-
-    This stages your changes, generates a commit message, and creates the commit.
-
-    Each plugin works differently. Check the plugin's description in the **Discover** tab or its homepage to learn what commands and capabilities it provides.
-  </Step>
-</Steps>
 
 The rest of this guide covers all the ways you can add marketplaces, install plugins, and manage your configuration.
 
@@ -354,13 +360,14 @@ If you see "unknown command" or the `/plugin` command doesn't appear:
 
 For detailed troubleshooting with solutions, see [Troubleshooting](/en/plugin-marketplaces#troubleshooting) in the marketplace guide. For debugging tools, see [Debugging and development tools](/en/plugins-reference#debugging-and-development-tools).
 
+### Code intelligence issues
+
+* **Language server not starting**: verify the binary is installed and available in your `$PATH`. Check the `/plugin` Errors tab for details.
+* **High memory usage**: language servers like `rust-analyzer` and `pyright` can consume significant memory on large projects. If you experience memory issues, disable the plugin with `/plugin disable <plugin-name>` and rely on Claude's built-in search tools instead.
+* **False positive diagnostics in monorepos**: language servers may report unresolved import errors for internal packages if the workspace isn't configured correctly. These don't affect Claude's ability to edit code.
+
 ## Next steps
 
 * **Build your own plugins**: See [Plugins](/en/plugins) to create skills, agents, and hooks
 * **Create a marketplace**: See [Create a plugin marketplace](/en/plugin-marketplaces) to distribute plugins to your team or community
 * **Technical reference**: See [Plugins reference](/en/plugins-reference) for complete specifications
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt

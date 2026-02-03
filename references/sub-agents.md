@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Create custom subagents
 
 > Create and use specialized AI subagents in Claude Code for task-specific workflows and improved context management.
@@ -72,53 +76,45 @@ Subagents are defined in Markdown files with YAML frontmatter. You can [create t
 
 This walkthrough guides you through creating a user-level subagent with the `/agent` command. The subagent reviews code and suggests improvements for the codebase.
 
-<Steps>
-  <Step title="Open the subagents interface">
-    In Claude Code, run:
+1. **Open the subagents interface**
+   In Claude Code, run:
+   
+       ```
+       /agents
+       ```
 
-    ```
-    /agents
-    ```
-  </Step>
+2. **Create a new user-level agent**
+   Select **Create new agent**, then choose **User-level**. This saves the subagent to `~/.claude/agents/` so it's available in all your projects.
 
-  <Step title="Create a new user-level agent">
-    Select **Create new agent**, then choose **User-level**. This saves the subagent to `~/.claude/agents/` so it's available in all your projects.
-  </Step>
+3. **Generate with Claude**
+   Select **Generate with Claude**. When prompted, describe the subagent:
+   
+       ```
+       A code improvement agent that scans files and suggests improvements
+       for readability, performance, and best practices. It should explain
+       each issue, show the current code, and provide an improved version.
+       ```
+   
+       Claude generates the system prompt and configuration. Press `e` to open it in your editor if you want to customize it.
 
-  <Step title="Generate with Claude">
-    Select **Generate with Claude**. When prompted, describe the subagent:
+4. **Select tools**
+   For a read-only reviewer, deselect everything except **Read-only tools**. If you keep all tools selected, the subagent inherits all tools available to the main conversation.
 
-    ```
-    A code improvement agent that scans files and suggests improvements
-    for readability, performance, and best practices. It should explain
-    each issue, show the current code, and provide an improved version.
-    ```
+5. **Select model**
+   Choose which model the subagent uses. For this example agent, select **Sonnet**, which balances capability and speed for analyzing code patterns.
 
-    Claude generates the system prompt and configuration. Press `e` to open it in your editor if you want to customize it.
-  </Step>
+6. **Choose a color**
+   Pick a background color for the subagent. This helps you identify which subagent is running in the UI.
 
-  <Step title="Select tools">
-    For a read-only reviewer, deselect everything except **Read-only tools**. If you keep all tools selected, the subagent inherits all tools available to the main conversation.
-  </Step>
+7. **Save and try it out**
+   Save the subagent. It's available immediately (no restart needed). Try it:
+   
+       ```
+       Use the code-improver agent to suggest improvements in this project
+       ```
+   
+       Claude delegates to your new subagent, which scans the codebase and returns improvement suggestions.
 
-  <Step title="Select model">
-    Choose which model the subagent uses. For this example agent, select **Sonnet**, which balances capability and speed for analyzing code patterns.
-  </Step>
-
-  <Step title="Choose a color">
-    Pick a background color for the subagent. This helps you identify which subagent is running in the UI.
-  </Step>
-
-  <Step title="Save and try it out">
-    Save the subagent. It's available immediately (no restart needed). Try it:
-
-    ```
-    Use the code-improver agent to suggest improvements in this project
-    ```
-
-    Claude delegates to your new subagent, which scans the codebase and returns improvement suggestions.
-  </Step>
-</Steps>
 
 You now have a subagent you can use in any project on your machine to analyze codebases and suggest improvements.
 
@@ -288,7 +284,7 @@ hooks:
 ---
 ```
 
-Claude Code [passes hook input as JSON](/en/hooks#pretooluse-input) via stdin to hook commands. The validation script reads this JSON, extracts the Bash command, and [exits with code 2](/en/hooks#exit-code-2-behavior) to block write operations:
+Claude Code [passes hook input as JSON](/en/hooks#pretooluse-input) via stdin to hook commands. The validation script reads this JSON, extracts the Bash command, and [exits with code 2](/en/hooks#exit-code-2-behavior-per-event) to block write operations:
 
 ```bash  theme={null}
 #!/bin/bash
@@ -306,7 +302,7 @@ fi
 exit 0
 ```
 
-See [Hook input](/en/hooks#pretooluse-input) for the complete input schema and [exit codes](/en/hooks#simple-exit-code) for how exit codes affect behavior.
+See [Hook input](/en/hooks#pretooluse-input) for the complete input schema and [exit codes](/en/hooks#exit-code-output) for how exit codes affect behavior.
 
 #### Disable specific subagents
 
@@ -326,7 +322,7 @@ This works for both built-in and custom subagents. You can also use the `--disal
 claude --disallowedTools "Task(Explore)"
 ```
 
-See [IAM documentation](/en/iam#tool-specific-permission-rules) for more details on permission rules.
+See [Permissions documentation](/en/permissions#tool-specific-permission-rules) for more details on permission rules.
 
 ### Define hooks for subagents
 
@@ -339,11 +335,13 @@ Subagents can define [hooks](/en/hooks) that run during the subagent's lifecycle
 
 Define hooks directly in the subagent's markdown file. These hooks only run while that specific subagent is active and are cleaned up when it finishes.
 
-| Event         | Matcher input | When it fires                   |
-| :------------ | :------------ | :------------------------------ |
-| `PreToolUse`  | Tool name     | Before the subagent uses a tool |
-| `PostToolUse` | Tool name     | After the subagent uses a tool  |
-| `Stop`        | (none)        | When the subagent finishes      |
+All [hook events](/en/hooks#hook-events) are supported. The most common events for subagents are:
+
+| Event         | Matcher input | When it fires                                                       |
+| :------------ | :------------ | :------------------------------------------------------------------ |
+| `PreToolUse`  | Tool name     | Before the subagent uses a tool                                     |
+| `PostToolUse` | Tool name     | After the subagent uses a tool                                      |
+| `Stop`        | (none)        | When the subagent finishes (converted to `SubagentStop` at runtime) |
 
 This example validates Bash commands with the `PreToolUse` hook and runs a linter after file edits with `PostToolUse`:
 
@@ -369,14 +367,14 @@ hooks:
 
 #### Project-level hooks for subagent events
 
-Configure hooks in `settings.json` that respond to subagent lifecycle events in the main session. Use the `matcher` field to target specific agent types by name.
+Configure hooks in `settings.json` that respond to subagent lifecycle events in the main session.
 
 | Event           | Matcher input   | When it fires                    |
 | :-------------- | :-------------- | :------------------------------- |
 | `SubagentStart` | Agent type name | When a subagent begins execution |
-| `SubagentStop`  | Agent type name | When a subagent completes        |
+| `SubagentStop`  | (none)          | When any subagent completes      |
 
-This example runs setup and cleanup scripts only when the `db-agent` subagent starts and stops:
+`SubagentStart` supports matchers to target specific agent types by name. `SubagentStop` fires for all subagent completions regardless of matcher values. This example runs a setup script only when the `db-agent` subagent starts, and a cleanup script when any subagent stops:
 
 ```json  theme={null}
 {
@@ -391,7 +389,6 @@ This example runs setup and cleanup scripts only when the `db-agent` subagent st
     ],
     "SubagentStop": [
       {
-        "matcher": "db-agent",
         "hooks": [
           { "type": "command", "command": "./scripts/cleanup-db-connection.sh" }
         ]
@@ -421,7 +418,7 @@ Have the code-reviewer subagent look at my recent changes
 Subagents can run in the foreground (blocking) or background (concurrent):
 
 * **Foreground subagents** block the main conversation until complete. Permission prompts and clarifying questions (like [`AskUserQuestion`](/en/settings#tools-available-to-claude)) are passed through to you.
-* **Background subagents** run concurrently while you continue working. They inherit the parent's permissions and auto-deny anything not pre-approved. If a background subagent needs a permission it doesn't have or needs to ask clarifying questions, that tool call fails but the subagent continues. MCP tools are not available in background subagents.
+* **Background subagents** run concurrently while you continue working. Before launching, Claude Code prompts for any tool permissions the subagent will need, ensuring it has the necessary approvals upfront. Once running, the subagent inherits these permissions and auto-denies anything not pre-approved. If a background subagent needs to ask clarifying questions, that tool call fails but the subagent continues. MCP tools are not available in background subagents.
 
 If a background subagent fails due to missing permissions, you can [resume it](#resume-subagents) in the foreground to retry with interactive prompts.
 
@@ -675,7 +672,7 @@ When asked to analyze data:
 You cannot modify data. If asked to INSERT, UPDATE, DELETE, or modify schema, explain that you only have read access.
 ```
 
-Claude Code [passes hook input as JSON](/en/hooks#pretooluse-input) via stdin to hook commands. The validation script reads this JSON, extracts the command being executed, and checks it against a list of SQL write operations. If a write operation is detected, the script [exits with code 2](/en/hooks#exit-code-2-behavior) to block execution and returns an error message to Claude via stderr.
+Claude Code [passes hook input as JSON](/en/hooks#pretooluse-input) via stdin to hook commands. The validation script reads this JSON, extracts the command being executed, and checks it against a list of SQL write operations. If a write operation is detected, the script [exits with code 2](/en/hooks#exit-code-2-behavior-per-event) to block execution and returns an error message to Claude via stderr.
 
 Create the validation script anywhere in your project. The path must match the `command` field in your hook configuration:
 
@@ -708,7 +705,7 @@ Make the script executable:
 chmod +x ./scripts/validate-readonly-query.sh
 ```
 
-The hook receives JSON via stdin with the Bash command in `tool_input.command`. Exit code 2 blocks the operation and feeds the error message back to Claude. See [Hooks](/en/hooks#simple-exit-code) for details on exit codes and [Hook input](/en/hooks#pretooluse-input) for the complete input schema.
+The hook receives JSON via stdin with the Bash command in `tool_input.command`. Exit code 2 blocks the operation and feeds the error message back to Claude. See [Hooks](/en/hooks#exit-code-output) for details on exit codes and [Hook input](/en/hooks#pretooluse-input) for the complete input schema.
 
 ## Next steps
 
@@ -717,8 +714,3 @@ Now that you understand subagents, explore these related features:
 * [Distribute subagents with plugins](/en/plugins) to share subagents across teams or projects
 * [Run Claude Code programmatically](/en/headless) with the Agent SDK for CI/CD and automation
 * [Use MCP servers](/en/mcp) to give subagents access to external tools and data
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt

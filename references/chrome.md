@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Use Claude Code with Chrome (beta)
 
 > Connect Claude Code to your browser to test web apps, debug with console logs, and automate browser tasks.
@@ -41,27 +45,23 @@ Claude opens new tabs for browser tasks rather than taking over existing ones. H
 
 ## Set up the integration
 
-<Steps>
-  <Step title="Update Claude Code">
-    Chrome integration requires a recent version of Claude Code. If you installed using the [native installer](/en/quickstart#step-1-install-claude-code), updates happen automatically. Otherwise, run:
+1. **Update Claude Code**
+   Chrome integration requires a recent version of Claude Code. If you installed using the [native installer](/en/quickstart#step-1-install-claude-code), updates happen automatically. Otherwise, run:
+   
+       ```bash  theme={null}
+       claude update
+       ```
 
-    ```bash  theme={null}
-    claude update
-    ```
-  </Step>
+2. **Start Claude Code with Chrome enabled**
+   Launch Claude Code with the `--chrome` flag:
+   
+       ```bash  theme={null}
+       claude --chrome
+       ```
 
-  <Step title="Start Claude Code with Chrome enabled">
-    Launch Claude Code with the `--chrome` flag:
+3. **Verify the connection**
+   Run `/chrome` to check the connection status and manage settings. If the extension isn't detected, you'll see a warning with a link to install it.
 
-    ```bash  theme={null}
-    claude --chrome
-    ```
-  </Step>
-
-  <Step title="Verify the connection">
-    Run `/chrome` to check the connection status and manage settings. If the extension isn't detected, you'll see a warning with a link to install it.
-  </Step>
-</Steps>
 
 You can also enable Chrome integration from within an existing session using the `/chrome` command.
 
@@ -207,8 +207,3 @@ Site-level permissions are inherited from the Chrome extension. Manage permissio
 * [CLI reference](/en/cli-reference) - Command-line flags including `--chrome`
 * [Common workflows](/en/common-workflows) - More ways to use Claude Code
 * [Getting started with Claude for Chrome](https://support.anthropic.com/en/articles/12012173-getting-started-with-claude-for-chrome) - Full documentation for the Chrome extension, including shortcuts, scheduling, and permissions
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt

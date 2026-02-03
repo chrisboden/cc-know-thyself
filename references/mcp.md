@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Connect Claude Code to tools via MCP
 
 > Learn how to connect Claude Code to your tools with the Model Context Protocol.
@@ -363,25 +367,22 @@ claude mcp add --transport stdio db -- npx -y @bytebase/dbhub \
 
 Many cloud-based MCP servers require authentication. Claude Code supports OAuth 2.0 for secure connections.
 
-<Steps>
-  <Step title="Add the server that requires authentication">
-    For example:
+1. **Add the server that requires authentication**
+   For example:
+   
+       ```bash  theme={null}
+       claude mcp add --transport http sentry https://mcp.sentry.dev/mcp
+       ```
 
-    ```bash  theme={null}
-    claude mcp add --transport http sentry https://mcp.sentry.dev/mcp
-    ```
-  </Step>
+2. **Use the /mcp command within Claude Code**
+   In Claude code, use the command:
+   
+       ```
+       > /mcp
+       ```
+   
+       Then follow the steps in your browser to login.
 
-  <Step title="Use the /mcp command within Claude Code">
-    In Claude code, use the command:
-
-    ```
-    > /mcp
-    ```
-
-    Then follow the steps in your browser to login.
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -394,26 +395,23 @@ Many cloud-based MCP servers require authentication. Claude Code supports OAuth 
 
 If you have a JSON configuration for an MCP server, you can add it directly:
 
-<Steps>
-  <Step title="Add an MCP server from JSON">
-    ```bash  theme={null}
-    # Basic syntax
-    claude mcp add-json <name> '<json>'
+1. **Add an MCP server from JSON**
+   ```bash  theme={null}
+       # Basic syntax
+       claude mcp add-json <name> '<json>'
+   
+       # Example: Adding an HTTP server with JSON configuration
+       claude mcp add-json weather-api '{"type":"http","url":"https://api.weather.com/mcp","headers":{"Authorization":"Bearer token"}}'
+   
+       # Example: Adding a stdio server with JSON configuration
+       claude mcp add-json local-weather '{"type":"stdio","command":"/path/to/weather-cli","args":["--api-key","abc123"],"env":{"CACHE_DIR":"/tmp"}}'
+       ```
 
-    # Example: Adding an HTTP server with JSON configuration
-    claude mcp add-json weather-api '{"type":"http","url":"https://api.weather.com/mcp","headers":{"Authorization":"Bearer token"}}'
+2. **Verify the server was added**
+   ```bash  theme={null}
+       claude mcp get weather-api
+       ```
 
-    # Example: Adding a stdio server with JSON configuration
-    claude mcp add-json local-weather '{"type":"stdio","command":"/path/to/weather-cli","args":["--api-key","abc123"],"env":{"CACHE_DIR":"/tmp"}}'
-    ```
-  </Step>
-
-  <Step title="Verify the server was added">
-    ```bash  theme={null}
-    claude mcp get weather-api
-    ```
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -425,24 +423,20 @@ If you have a JSON configuration for an MCP server, you can add it directly:
 
 If you've already configured MCP servers in Claude Desktop, you can import them:
 
-<Steps>
-  <Step title="Import servers from Claude Desktop">
-    ```bash  theme={null}
-    # Basic syntax 
-    claude mcp add-from-claude-desktop 
-    ```
-  </Step>
+1. **Import servers from Claude Desktop**
+   ```bash  theme={null}
+       # Basic syntax 
+       claude mcp add-from-claude-desktop 
+       ```
 
-  <Step title="Select which servers to import">
-    After running the command, you'll see an interactive dialog that allows you to select which servers you want to import.
-  </Step>
+2. **Select which servers to import**
+   After running the command, you'll see an interactive dialog that allows you to select which servers you want to import.
 
-  <Step title="Verify the servers were imported">
-    ```bash  theme={null}
-    claude mcp list 
-    ```
-  </Step>
-</Steps>
+3. **Verify the servers were imported**
+   ```bash  theme={null}
+       claude mcp list 
+       ```
+
 
 > **Tip:** Tips:
 
@@ -537,31 +531,27 @@ MCP servers can expose resources that you can reference using @ mentions, simila
 
 ### Reference MCP resources
 
-<Steps>
-  <Step title="List available resources">
-    Type `@` in your prompt to see available resources from all connected MCP servers. Resources appear alongside files in the autocomplete menu.
-  </Step>
+1. **List available resources**
+   Type `@` in your prompt to see available resources from all connected MCP servers. Resources appear alongside files in the autocomplete menu.
 
-  <Step title="Reference a specific resource">
-    Use the format `@server:protocol://resource/path` to reference a resource:
+2. **Reference a specific resource**
+   Use the format `@server:protocol://resource/path` to reference a resource:
+   
+       ```
+       > Can you analyze @github:issue://123 and suggest a fix?
+       ```
+   
+       ```
+       > Please review the API documentation at @docs:file://api/authentication
+       ```
 
-    ```
-    > Can you analyze @github:issue://123 and suggest a fix?
-    ```
+3. **Multiple resource references**
+   You can reference multiple resources in a single prompt:
+   
+       ```
+       > Compare @postgres:schema://users with @docs:file://database/user-model
+       ```
 
-    ```
-    > Please review the API documentation at @docs:file://api/authentication
-    ```
-  </Step>
-
-  <Step title="Multiple resource references">
-    You can reference multiple resources in a single prompt:
-
-    ```
-    > Compare @postgres:schema://users with @docs:file://database/user-model
-    ```
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -632,29 +622,25 @@ MCP servers can expose prompts that become available as commands in Claude Code.
 
 ### Execute MCP prompts
 
-<Steps>
-  <Step title="Discover available prompts">
-    Type `/` to see all available commands, including those from MCP servers. MCP prompts appear with the format `/mcp__servername__promptname`.
-  </Step>
+1. **Discover available prompts**
+   Type `/` to see all available commands, including those from MCP servers. MCP prompts appear with the format `/mcp__servername__promptname`.
 
-  <Step title="Execute a prompt without arguments">
-    ```
-    > /mcp__github__list_prs
-    ```
-  </Step>
+2. **Execute a prompt without arguments**
+   ```
+       > /mcp__github__list_prs
+       ```
 
-  <Step title="Execute a prompt with arguments">
-    Many prompts accept arguments. Pass them space-separated after the command:
+3. **Execute a prompt with arguments**
+   Many prompts accept arguments. Pass them space-separated after the command:
+   
+       ```
+       > /mcp__github__pr_review 456
+       ```
+   
+       ```
+       > /mcp__jira__create_issue "Bug in login flow" high
+       ```
 
-    ```
-    > /mcp__github__pr_review 456
-    ```
-
-    ```
-    > /mcp__jira__create_issue "Bug in login flow" high
-    ```
-  </Step>
-</Steps>
 
 > **Tip:** Tips:
 
@@ -884,8 +870,3 @@ URL patterns support wildcards using `*` to match any sequence of characters. Th
 * Name-based, command-based, and URL-based restrictions work together: a server passes if it matches **either** a name entry, a command entry, or a URL pattern (unless blocked by denylist)
 
 > **Note:** **When using `managed-mcp.json`**: Users cannot add MCP servers through `claude mcp add` or configuration files. The `allowedMcpServers` and `deniedMcpServers` settings still apply to filter which managed servers are actually loaded.
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt

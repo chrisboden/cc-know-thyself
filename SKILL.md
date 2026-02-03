@@ -23,7 +23,7 @@ For SDK-specific API questions (Python/TypeScript), also load the `cc-agent-sdk`
 When troubleshooting issues, start here:
 
 1. **General errors / unexpected behavior**: `references/troubleshooting.md`
-2. **Permission denied / tool blocked**: `references/settings.md`, `references/iam.md`
+2. **Permission denied / tool blocked**: `references/settings.md`, `references/permissions.md`
 3. **Hooks not firing / hook errors**: `references/hooks.md`, `references/hooks-guide.md`
 4. **MCP server issues**: `references/mcp.md`
 5. **Sandbox / file access issues**: `references/sandboxing.md`
@@ -52,12 +52,12 @@ Use `references/docs_manifest.json` for a machine-readable map when the topic is
 - `references/how-claude-code-works.md` - architecture and internal workings
 - `references/best-practices.md` - best practices and recommendations
 - `references/changelog.md` - release notes and version changes
+- `references/authentication.md` - authentication and credential management
 - `references/docs_manifest.json` - machine-readable manifest of all docs
 
 ### CLI Usage and Commands
 
 - `references/cli-reference.md` - CLI flags, options, and syntax
-- `references/slash-commands.md` - slash command usage
 - `references/interactive-mode.md` - interactive mode behavior
 - `references/headless.md` - non-interactive/headless usage
 - `references/common-workflows.md` - common task flows
@@ -94,6 +94,7 @@ Use `references/docs_manifest.json` for a machine-readable map when the topic is
 - `references/chrome.md` - Chrome/extension usage
 - `references/claude-code-on-the-web.md` - web usage
 - `references/devcontainer.md` - devcontainer setup
+- `references/keybindings.md` - keyboard shortcuts and keybindings
 
 ### Integrations and Automation
 
@@ -110,11 +111,12 @@ Use `references/docs_manifest.json` for a machine-readable map when the topic is
 - `references/google-vertex-ai.md` - Vertex AI configuration
 - `references/microsoft-foundry.md` - Microsoft Foundry configuration
 - `references/llm-gateway.md` - LLM gateway setup and routing
+- `references/openrouter.md` - OpenRouter routing and configuration
 
 ### Security, Compliance, and Networking
 
 - `references/security.md` - security guidance
-- `references/iam.md` - IAM and access control
+- `references/permissions.md` - permission rules and modes
 - `references/legal-and-compliance.md` - legal/compliance notes
 - `references/data-usage.md` - data handling and retention
 - `references/network-config.md` - network configuration

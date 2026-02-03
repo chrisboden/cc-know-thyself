@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Troubleshooting
 
 > Discover solutions to common issues with Claude Code installation and usage.
@@ -130,23 +134,19 @@ If Git is installed in a non-standard location, adjust the path accordingly.
 
 If you see this error after installation, the `claude` command isn't in your PATH. Add it manually:
 
-<Steps>
-  <Step title="Open Environment Variables">
-    Press `Win + R`, type `sysdm.cpl`, and press Enter. Click **Advanced** → **Environment Variables**.
-  </Step>
+1. **Open Environment Variables**
+   Press `Win + R`, type `sysdm.cpl`, and press Enter. Click **Advanced** → **Environment Variables**.
 
-  <Step title="Edit User PATH">
-    Under "User variables", select **Path** and click **Edit**. Click **New** and add:
+2. **Edit User PATH**
+   Under "User variables", select **Path** and click **Edit**. Click **New** and add:
+   
+       ```
+       %USERPROFILE%\.local\bin
+       ```
 
-    ```
-    %USERPROFILE%\.local\bin
-    ```
-  </Step>
+3. **Restart your terminal**
+   Close and reopen PowerShell or CMD for changes to take effect.
 
-  <Step title="Restart your terminal">
-    Close and reopen PowerShell or CMD for changes to take effect.
-  </Step>
-</Steps>
 
 Verify installation:
 
@@ -159,7 +159,7 @@ claude doctor # Check installation health
 ### Repeated permission prompts
 
 If you find yourself repeatedly approving the same commands, you can allow specific tools
-to run without approval using the `/permissions` command. See [Permissions docs](/en/iam#configuring-permissions).
+to run without approval using the `/permissions` command. See [Permissions docs](/en/permissions#manage-permissions).
 
 ### Authentication issues
 
@@ -369,7 +369,7 @@ function example() {
 
 1. **Ask Claude to add language tags**: Request "Add appropriate language tags to all code blocks in this markdown file."
 
-2. **Use post-processing hooks**: Set up automatic formatting hooks to detect and add missing language tags. See the [markdown formatting hook example](/en/hooks-guide#markdown-formatting-hook) for implementation details.
+2. **Use post-processing hooks**: Set up automatic formatting hooks to detect and add missing language tags. See [Auto-format code after edits](/en/hooks-guide#auto-format-code-after-edits) for an example of a PostToolUse formatting hook.
 
 3. **Manual verification**: After generating markdown files, review them for proper code block formatting and request corrections if needed.
 
@@ -408,8 +408,3 @@ If you're experiencing issues not covered here:
    * Context usage warnings (large CLAUDE.md files, high MCP token usage, unreachable permission rules)
    * Plugin and agent loading errors
 4. Ask Claude directly about its capabilities and features - Claude has built-in access to its documentation
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt

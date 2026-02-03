@@ -1,3 +1,7 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://code.claude.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
 # Create and distribute a plugin marketplace
 
 > Build and host plugin marketplaces to distribute Claude Code extensions across teams and communities.
@@ -21,83 +25,76 @@ Once your marketplace is live, you can update it by pushing changes to your repo
 
 This example creates a marketplace with one plugin: a `/review` skill for code reviews. You'll create the directory structure, add a skill, create the plugin manifest and marketplace catalog, then install and test it.
 
-<Steps>
-  <Step title="Create the directory structure">
-    ```bash  theme={null}
-    mkdir -p my-marketplace/.claude-plugin
-    mkdir -p my-marketplace/plugins/review-plugin/.claude-plugin
-    mkdir -p my-marketplace/plugins/review-plugin/skills/review
-    ```
-  </Step>
+1. **Create the directory structure**
+   ```bash  theme={null}
+       mkdir -p my-marketplace/.claude-plugin
+       mkdir -p my-marketplace/plugins/review-plugin/.claude-plugin
+       mkdir -p my-marketplace/plugins/review-plugin/skills/review
+       ```
 
-  <Step title="Create the skill">
-    Create a `SKILL.md` file that defines what the `/review` skill does.
+2. **Create the skill**
+   Create a `SKILL.md` file that defines what the `/review` skill does.
+   
+       ```markdown my-marketplace/plugins/review-plugin/skills/review/SKILL.md theme={null}
+       ---
+       description: Review code for bugs, security, and performance
+       disable-model-invocation: true
+       ---
+   
+       Review the code I've selected or the recent changes for:
+       - Potential bugs or edge cases
+       - Security concerns
+       - Performance issues
+       - Readability improvements
+   
+       Be concise and actionable.
+       ```
 
-    ```markdown my-marketplace/plugins/review-plugin/skills/review/SKILL.md theme={null}
-    ---
-    description: Review code for bugs, security, and performance
-    disable-model-invocation: true
-    ---
+3. **Create the plugin manifest**
+   Create a `plugin.json` file that describes the plugin. The manifest goes in the `.claude-plugin/` directory.
+   
+       ```json my-marketplace/plugins/review-plugin/.claude-plugin/plugin.json theme={null}
+       {
+         "name": "review-plugin",
+         "description": "Adds a /review skill for quick code reviews",
+         "version": "1.0.0"
+       }
+       ```
 
-    Review the code I've selected or the recent changes for:
-    - Potential bugs or edge cases
-    - Security concerns
-    - Performance issues
-    - Readability improvements
+4. **Create the marketplace file**
+   Create the marketplace catalog that lists your plugin.
+   
+       ```json my-marketplace/.claude-plugin/marketplace.json theme={null}
+       {
+         "name": "my-plugins",
+         "owner": {
+           "name": "Your Name"
+         },
+         "plugins": [
+           {
+             "name": "review-plugin",
+             "source": "./plugins/review-plugin",
+             "description": "Adds a /review skill for quick code reviews"
+           }
+         ]
+       }
+       ```
 
-    Be concise and actionable.
-    ```
-  </Step>
+5. **Add and install**
+   Add the marketplace and install the plugin.
+   
+       ```shell  theme={null}
+       /plugin marketplace add ./my-marketplace
+       /plugin install review-plugin@my-plugins
+       ```
 
-  <Step title="Create the plugin manifest">
-    Create a `plugin.json` file that describes the plugin. The manifest goes in the `.claude-plugin/` directory.
+6. **Try it out**
+   Select some code in your editor and run your new command.
+   
+       ```shell  theme={null}
+       /review
+       ```
 
-    ```json my-marketplace/plugins/review-plugin/.claude-plugin/plugin.json theme={null}
-    {
-      "name": "review-plugin",
-      "description": "Adds a /review skill for quick code reviews",
-      "version": "1.0.0"
-    }
-    ```
-  </Step>
-
-  <Step title="Create the marketplace file">
-    Create the marketplace catalog that lists your plugin.
-
-    ```json my-marketplace/.claude-plugin/marketplace.json theme={null}
-    {
-      "name": "my-plugins",
-      "owner": {
-        "name": "Your Name"
-      },
-      "plugins": [
-        {
-          "name": "review-plugin",
-          "source": "./plugins/review-plugin",
-          "description": "Adds a /review skill for quick code reviews"
-        }
-      ]
-    }
-    ```
-  </Step>
-
-  <Step title="Add and install">
-    Add the marketplace and install the plugin.
-
-    ```shell  theme={null}
-    /plugin marketplace add ./my-marketplace
-    /plugin install review-plugin@my-plugins
-    ```
-  </Step>
-
-  <Step title="Try it out">
-    Select some code in your editor and run your new command.
-
-    ```shell  theme={null}
-    /review
-    ```
-  </Step>
-</Steps>
 
 To learn more about what plugins can do, including hooks, agents, MCP servers, and LSP servers, see [Plugins](/en/plugins).
 
@@ -363,7 +360,9 @@ Any git hosting service works, such as GitLab, Bitbucket, and self-hosted server
 
 ### Private repositories
 
-Claude Code supports installing plugins from private repositories. Set the appropriate authentication token in your environment, and Claude Code will use it when authentication is required.
+Claude Code supports installing plugins from private repositories. For manual installation and updates, Claude Code uses your existing git credential helpers. If `git clone` works for a private repository in your terminal, it works in Claude Code too. Common credential helpers include `gh auth login` for GitHub, macOS Keychain, and `git-credential-store`.
+
+Background auto-updates run at startup without credential helpers, since interactive prompts would block Claude Code from starting. To enable auto-updates for private marketplaces, set the appropriate authentication token in your environment:
 
 | Provider  | Environment variables        | Notes                                     |
 | :-------- | :--------------------------- | :---------------------------------------- |
@@ -376,8 +375,6 @@ Set the token in your shell configuration (for example, `.bashrc`, `.zshrc`) or 
 ```bash  theme={null}
 export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
 ```
-
-Authentication tokens are only used when a repository requires authentication. Public repositories work without any tokens configured, even if tokens are present in your environment.
 
 > **Note:** For CI/CD environments, configure the token as a secret environment variable. GitHub Actions automatically provides `GITHUB_TOKEN` for repositories in the same organization.
 
@@ -466,14 +463,28 @@ Allow specific marketplaces only:
 }
 ```
 
+Allow all marketplaces from an internal git server using regex pattern matching:
+
+```json  theme={null}
+{
+  "strictKnownMarketplaces": [
+    {
+      "source": "hostPattern",
+      "hostPattern": "^github\\.example\\.com$"
+    }
+  ]
+}
+```
+
 #### How restrictions work
 
 Restrictions are validated early in the plugin installation process, before any network requests or filesystem operations occur. This prevents unauthorized marketplace access attempts.
 
-The allowlist uses exact matching. For a marketplace to be allowed, all specified fields must match exactly:
+The allowlist uses exact matching for most source types. For a marketplace to be allowed, all specified fields must match exactly:
 
 * For GitHub sources: `repo` is required, and `ref` or `path` must also match if specified in the allowlist
 * For URL sources: the full URL must match exactly
+* For `hostPattern` sources: the marketplace host is matched against the regex pattern
 
 Because `strictKnownMarketplaces` is set in [managed settings](/en/settings#settings-files), individual users and project configurations cannot override these restrictions.
 
@@ -552,16 +563,23 @@ Run `claude plugin validate .` or `/plugin validate .` from your marketplace dir
 
 ### Private repository authentication fails
 
-**Symptoms**: Authentication errors when installing plugins from private repositories, even with tokens configured
+**Symptoms**: Authentication errors when installing plugins from private repositories
 
 **Solutions**:
 
-* Verify your token is set in the current shell session: `echo $GITHUB_TOKEN`
+For manual installation and updates:
+
+* Verify you're authenticated with your git provider (for example, run `gh auth status` for GitHub)
+* Check that your credential helper is configured correctly: `git config --global credential.helper`
+* Try cloning the repository manually to verify your credentials work
+
+For background auto-updates:
+
+* Set the appropriate token in your environment: `echo $GITHUB_TOKEN`
 * Check that the token has the required permissions (read access to the repository)
 * For GitHub, ensure the token has the `repo` scope for private repositories
 * For GitLab, ensure the token has at least `read_repository` scope
 * Verify the token hasn't expired
-* If using multiple git providers, ensure you've set the token for the correct provider
 
 ### Plugins with relative paths fail in URL-based marketplaces
 
@@ -594,8 +612,3 @@ For additional debugging tools and common issues, see [Debugging and development
 * [Plugins reference](/en/plugins-reference) - Complete technical specifications and schemas
 * [Plugin settings](/en/settings#plugin-settings) - Plugin configuration options
 * [strictKnownMarketplaces reference](/en/settings#strictknownmarketplaces) - Managed marketplace restrictions
-
-
----
-
-> To find navigation and other pages in this documentation, fetch the llms.txt file at: https://code.claude.com/docs/llms.txt
